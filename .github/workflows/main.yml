@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SSH_PRIVATE_KEY: ${{ secrets.ID_RSA }}
+      EC2_IP: ""
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
