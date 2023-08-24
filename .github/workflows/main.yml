@@ -17,7 +17,7 @@ jobs:
              echo $EC2_IP && echo $TE
       #- run: ssh -i <(echo "$ID_RSA") ec2-user@$EC2_IP
       - run: echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
-      - run: echo $EC2_IP
+      - run: echo $EC2_IP && echo $TE
       - run: ssh -o StrictHostKeyChecking=no -i private_key ec2-user@$EC2_IP
 
 
