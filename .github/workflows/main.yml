@@ -15,8 +15,8 @@ jobs:
       #- run: ssh -i <(echo "$ID_RSA") ec2-user@$EC2_IP
       - run: |
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
-          echo $(EC2_IP)
-          ssh -o StrictHostKeyChecking=no -i private_key ec2-user@$(EC2_IP) 
+          echo $EC2_IP
+          ssh -o StrictHostKeyChecking=no -i private_key ec2-user@$EC2_IP
 
              
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
