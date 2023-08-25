@@ -12,9 +12,19 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "EC2_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web_server" --query 'Reservations[].Instances[].PublicIpAddress' --output text --region eu-west-2) " >> $GITHUB_ENV
+
+      - name: Copy File to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ env.EC2_IP }}  
+          username: "ec2-user"  # SSH username for your EC2 instance
+          key: $SSH_PRIVATE_KEY  # Private key for authentication
+          source: "website/index.html"  # Local file you want to copy
+          target: "/var/www/html/"  
+
+      
       - run: |
-          # export EC2_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web_server" --query 'Reservations[].Instances[].PublicIpAddress' --output text --region eu-west-2) 
-          echo ${{ env.EC2_IP }} 
+          echo "ec2 ip: ${{ env.EC2_IP }}" 
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
           pwd &&
@@ -25,9 +35,9 @@ jobs:
           sudo systemctl enable httpd.service
           sudo systemctl status httpd.service
           ls /var/www/html/
-          sudo touch /var/www/html/index.html
-          sudo chmod -R 777 /var/www/html/index.html
-          sudo echo "This is $(hostname)" >> /var/www/html/index.html"
+          # sudo touch /var/www/html/index.html
+          # sudo chmod -R 777 /var/www/html/index.html
+          # sudo echo "This is $(hostname)" >> /var/www/html/index.html"
 
           # sudo amazon-linux-extras install docker -y
           # sudo service docker start
