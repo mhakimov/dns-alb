@@ -19,20 +19,24 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
           pwd &&
           sudo yum update &&
-          sudo amazon-linux-extras install docker -y
-          sudo service docker start
-          sudo docker ps
-          sudo docker pull httpd
-          
-          container_name="magical_ritchie"
-          container_status=$(docker ps --filter "name=$container_name" --format "{{.Names}}")
+          yum install httpd -y
+          service httpd start
+          service httpd status
 
-          if [ "$container_status" == "$container_name" ]; then
-            echo "$container_name is running."
-          else
-            echo "$container_name is not running."
-            sudo docker run -d -p 80:80 --name magical_ritchie httpd
-          fi"
+          # sudo amazon-linux-extras install docker -y
+          # sudo service docker start
+          # sudo docker ps
+          # sudo docker pull httpd
+          
+          # container_name="magical_ritchie"
+          # container_status=$(docker ps --filter "name=$container_name" --format "{{.Names}}")
+
+          # if [ "$container_status" == "$container_name" ]; then
+          #   echo "$container_name is running."
+          # else
+          #   echo "$container_name is not running."
+          #   sudo docker run -d -p 80:80 --name magical_ritchie httpd
+          # fi"
             
           
       - run: pwd             
