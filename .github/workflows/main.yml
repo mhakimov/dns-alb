@@ -22,7 +22,7 @@ jobs:
           sudo yum install httpd -y
           sudo systemctl start httpd.service
           sudo systemctl enable httpd.service
-          echo "This is $(hostname)" > /var/www/html/index.html"
+          sudo echo "This is $(hostname)" > /var/www/html/index.html"
 
           # sudo amazon-linux-extras install docker -y
           # sudo service docker start
