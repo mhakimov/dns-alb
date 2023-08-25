@@ -20,6 +20,7 @@ jobs:
           pwd &&
           sudo yum update &&
           sudo yum install httpd -y
+          chkconfig httpd on
           sudo service httpd start
           sudo service httpd status"
 
