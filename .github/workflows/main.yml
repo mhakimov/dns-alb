@@ -19,7 +19,7 @@ jobs:
           host: ${{ env.EC2_IP }}  
           username: "ec2-user"  # SSH username for your EC2 instance
           key: $SSH_PRIVATE_KEY  # Private key for authentication
-          source: "website/index.html"  # Local file you want to copy
+          source: "./website/index.html"  # Local file you want to copy
           target: "/var/www/html/"  
 
       
