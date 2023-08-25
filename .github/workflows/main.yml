@@ -18,7 +18,7 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
           pwd &&
-          sudo su
+          sudo su &&
           yum update &&
           yum install httpd -y
           sudo systemctl start httpd.service
