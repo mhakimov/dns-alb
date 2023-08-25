@@ -24,6 +24,7 @@ jobs:
           sudo systemctl start httpd.service
           sudo systemctl enable httpd.service
           sudo systemctl status httpd.service
+          sudo chmod -R 777 /var/www/html/index.html
           sudo echo "This is $(hostname)" > /var/www/html/index.html"
 
           # sudo amazon-linux-extras install docker -y
