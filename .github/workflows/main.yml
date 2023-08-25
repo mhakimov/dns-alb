@@ -20,9 +20,9 @@ jobs:
           pwd &&
           sudo yum update &&
           sudo yum install httpd -y
-          chkconfig httpd on
-          sudo service httpd start
-          sudo service httpd status"
+          systemctl start httpd.service
+          systemctl enable httpd.service
+          echo "This is $(hostname)" > /var/www/html/index.html"
 
           # sudo amazon-linux-extras install docker -y
           # sudo service docker start
