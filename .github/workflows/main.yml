@@ -20,6 +20,7 @@ jobs:
           pwd &&
           sudo yum update
           sudo yum install httpd -y
+          docker stop $(docker ps -aq)
           sudo systemctl start httpd.service
           sudo systemctl enable httpd.service
           sudo systemctl status httpd.service
