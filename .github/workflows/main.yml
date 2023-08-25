@@ -23,7 +23,17 @@ jobs:
           sudo service docker start
           sudo docker ps
           sudo docker pull httpd
-          sudo docker run -d -p 80:80 httpd"
+          
+          container_name="magical_ritchie"
+          container_status=$(docker ps --filter "name=$container_name" --format "{{.Names}}")
+
+          if [ "$container_status" == "$container_name" ]; then
+            echo "$container_name is running."
+          else
+            echo "$container_name is not running."
+            sudo docker run -d -p 80:80 --name magical_ritchie httpd"
+          fi
+            
           
       - run: pwd             
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
