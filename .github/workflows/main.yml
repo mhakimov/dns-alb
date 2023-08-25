@@ -24,7 +24,7 @@ jobs:
           sudo systemctl start httpd.service
           sudo systemctl enable httpd.service
           sudo systemctl status httpd.service
-          ls /var/
+          ls /var/www/html/
           sudo chmod -R 777 /var/www/html/index.html
           sudo echo "This is $(hostname)" > /var/www/html/index.html"
 
