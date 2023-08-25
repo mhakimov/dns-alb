@@ -35,9 +35,10 @@ jobs:
           sudo systemctl enable httpd.service
           sudo systemctl status httpd.service
           ls /var/www/html/
+          sudo curl -o /var/www/html/index.html https://github.com/mhakimov/dns-alb/blob/main/website/index.html
           # sudo touch /var/www/html/index.html
           # sudo chmod -R 777 /var/www/html/index.html
-          # sudo echo "This is $(hostname)" >> /var/www/html/index.html"
+          # sudo echo "This is $(hostname)" > /var/www/html/index.html"
 
           # sudo amazon-linux-extras install docker -y
           # sudo service docker start
