@@ -13,16 +13,6 @@ jobs:
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "EC2_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web_server" --query 'Reservations[].Instances[].PublicIpAddress' --output text --region eu-west-2) " >> $GITHUB_ENV
 
-      - name: Copy File to EC2
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ env.EC2_IP }}  
-          username: "ec2-user"  # SSH username for your EC2 instance
-          key: $SSH_PRIVATE_KEY  # Private key for authentication
-          source: "./website/index.html"  # Local file you want to copy
-          target: "/var/www/html/"  
-
-      
       - run: |
           echo "ec2 ip: ${{ env.EC2_IP }}" 
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
