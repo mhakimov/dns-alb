@@ -31,8 +31,8 @@ jobs:
             echo "$container_name is running."
           else
             echo "$container_name is not running."
-            sudo docker run -d -p 80:80 --name magical_ritchie httpd"
-          fi
+            sudo docker run -d -p 80:80 --name magical_ritchie httpd
+          fi"
             
           
       - run: pwd             
