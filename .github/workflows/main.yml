@@ -18,7 +18,10 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
           pwd &&
-          sudo yum update"
+          sudo yum update &&
+          sudo amazon-linux-extras install docker -y
+          sudo service docker start
+          sudo docker ps"
           
       - run: pwd             
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
