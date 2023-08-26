@@ -20,6 +20,7 @@ jobs:
           pwd &&
           sudo yum update
           sudo yum install httpd -y
+          sudo yum install git -y
           git clone https://github.com/mhakimov/dns-alb.git
           ls
           sudo mv dns/alb/website/index.html /var/www/html/index.html
