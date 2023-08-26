@@ -1,0 +1,56 @@
+name: Deploy website
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.ID_RSA }}
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+
+      - name: fetch ec2 IP
+        run: echo "EC2_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web_server" --query 'Reservations[].Instances[].PublicIpAddress' --output text --region eu-west-2) " >> $GITHUB_ENV
+
+      - name: run apache server
+        run: |
+          echo "ec2 ip: ${{ env.EC2_IP }}" 
+          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
+          sudo yum update
+          sudo yum install httpd -y
+          sudo yum install git -y
+          git clone https://github.com/mhakimov/dns-alb.git
+          sudo mv dns-alb/website/index.html /var/www/html/index.html
+          sudo systemctl start httpd.service
+          sudo systemctl enable httpd.service
+          sudo systemctl status httpd.service
+
+          # sudo amazon-linux-extras install docker -y
+          # sudo service docker start
+          # sudo docker ps
+          # sudo docker pull httpd
+          
+          # container_name="magical_ritchie"
+          # container_status=$(docker ps --filter "name=$container_name" --format "{{.Names}}")
+
+          # if [ "$container_status" == "$container_name" ]; then
+          #   echo "$container_name is running."
+          # else
+          #   echo "$container_name is not running."
+          #   sudo docker run -d -p 80:80 --name magical_ritchie httpd
+          # fi"
+            
+          
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
