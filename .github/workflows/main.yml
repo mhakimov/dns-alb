@@ -28,6 +28,6 @@ jobs:
           rm -r dns-alb
           sudo systemctl start httpd.service
           sudo systemctl enable httpd.service
-          sudo systemctl status httpd.service
+          sudo systemctl status httpd.service"
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
