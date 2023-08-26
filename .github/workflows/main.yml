@@ -23,7 +23,7 @@ jobs:
           sudo yum install git -y
           git clone https://github.com/mhakimov/dns-alb.git
           ls
-          sudo mv dns/alb/website/index.html /var/www/html/index.html
+          sudo mv dns-alb/website/index.html /var/www/html/index.html
           # sudo curl -o /var/www/html/index.html https://github.com/mhakimov/dns-alb/blob/main/website/index.html
           sudo systemctl start httpd.service
           sudo systemctl enable httpd.service
