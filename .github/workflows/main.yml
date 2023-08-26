@@ -23,10 +23,10 @@ jobs:
           sudo yum update
           sudo yum install httpd -y
           sudo yum install git -y
-          rm -r dns-alb
+          sudo rm -r dns-alb
           git clone https://github.com/mhakimov/dns-alb.git
           sudo mv dns-alb/website/index.html /var/www/html/index.html
-          rm -r dns-alb
+          sudo rm -r dns-alb
           sudo systemctl start httpd.service
           sudo systemctl enable httpd.service
           sudo systemctl status httpd.service"
