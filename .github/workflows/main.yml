@@ -25,32 +25,9 @@ jobs:
           sudo yum install git -y
           git clone https://github.com/mhakimov/dns-alb.git
           sudo mv dns-alb/website/index.html /var/www/html/index.html
+          rm -r dns-alb
           sudo systemctl start httpd.service
           sudo systemctl enable httpd.service
           sudo systemctl status httpd.service
 
-          # sudo amazon-linux-extras install docker -y
-          # sudo service docker start
-          # sudo docker ps
-          # sudo docker pull httpd
-          
-          # container_name="magical_ritchie"
-          # container_status=$(docker ps --filter "name=$container_name" --format "{{.Names}}")
-
-          # if [ "$container_status" == "$container_name" ]; then
-          #   echo "$container_name is running."
-          # else
-          #   echo "$container_name is not running."
-          #   sudo docker run -d -p 80:80 --name magical_ritchie httpd
-          # fi"
-            
-          
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
