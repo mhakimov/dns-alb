@@ -1,4 +1,4 @@
-name: GitHub Actions Demo
+name: Deploy website
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
@@ -11,27 +11,23 @@ jobs:
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "EC2_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web_server" --query 'Reservations[].Instances[].PublicIpAddress' --output text --region eu-west-2) " >> $GITHUB_ENV
 
-      - run: |
+      - name: fetch ec2 IP
+        run: echo "EC2_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web_server" --query 'Reservations[].Instances[].PublicIpAddress' --output text --region eu-west-2) " >> $GITHUB_ENV
+
+      - name: run apache server
+        run: |
           echo "ec2 ip: ${{ env.EC2_IP }}" 
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
-          pwd &&
           sudo yum update
           sudo yum install httpd -y
           sudo yum install git -y
           git clone https://github.com/mhakimov/dns-alb.git
-          ls
           sudo mv dns-alb/website/index.html /var/www/html/index.html
-          # sudo curl -o /var/www/html/index.html https://github.com/mhakimov/dns-alb/blob/main/website/index.html
           sudo systemctl start httpd.service
           sudo systemctl enable httpd.service
           sudo systemctl status httpd.service
-          ls /var/www/html/
-          # sudo touch /var/www/html/index.html
-          # sudo chmod -R 777 /var/www/html/index.html
-          # sudo echo "This is $(hostname)" > /var/www/html/index.html"
 
           # sudo amazon-linux-extras install docker -y
           # sudo service docker start
@@ -49,7 +45,6 @@ jobs:
           # fi"
             
           
-      - run: pwd             
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v3
