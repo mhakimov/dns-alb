@@ -22,7 +22,7 @@ jobs:
           for EC2_IP in $EC2_IPS; do
             echo 'IP address: $EC2_IP'
             ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2 $EC2_IP!' &&
-            sudo yum update
+            sudo yum update -y
             echo 'installing httpd'
             sudo yum install httpd -y
             echo 'installing git'
