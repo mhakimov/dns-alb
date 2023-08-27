@@ -21,7 +21,7 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
           for EC2_IP in $EC2_IPS; do
             echo 'IP address: $EC2_IP'
-            ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
+            ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2 $EC2_IP!' &&
             sudo yum update
             sudo yum install httpd -y
             sudo yum install git -y
@@ -32,7 +32,7 @@ jobs:
             sudo rm -r dns-alb
             sudo systemctl start httpd.service
             sudo systemctl enable httpd.service
-            sudo systemctl status httpd.service
+            sudo systemctl status httpd.service"
           done
           # ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
           # sudo yum update
@@ -46,6 +46,6 @@ jobs:
           # sudo systemctl start httpd.service
           # sudo systemctl enable httpd.service
           # sudo systemctl status httpd.service
-          "
+          
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
