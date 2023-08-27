@@ -23,8 +23,11 @@ jobs:
             echo 'IP address: $EC2_IP'
             ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2 $EC2_IP!' &&
             sudo yum update
+            echo 'installing httpd'
             sudo yum install httpd -y
+            echo 'installing git'
             sudo yum install git -y
+            echo 'removing dns-alb'
             sudo rm -r dns-alb
             git clone https://github.com/mhakimov/dns-alb.git
             sudo mv dns-alb/website/index.html /var/www/html/index.html
