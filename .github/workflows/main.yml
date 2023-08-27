@@ -32,7 +32,8 @@ jobs:
             sudo rm -r dns-alb
             sudo systemctl start httpd.service
             sudo systemctl enable httpd.service
-            sudo systemctl status httpd.service"
+            sudo systemctl status httpd.service
+            exit"
           done
           # ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
           # sudo yum update
