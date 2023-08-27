@@ -13,23 +13,39 @@ jobs:
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
 
       - name: fetch ec2 IP
-        run: echo "EC2_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web_server" --query 'Reservations[].Instances[].PublicIpAddress' --output text --region eu-west-2) " >> $GITHUB_ENV
+        run: echo "EC2_IPS=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web-server-*" --query 'Reservations[].Instances[].PublicIpAddress' --output text --region eu-west-2) " >> $GITHUB_ENV
 
       - name: run apache server
         run: |
-          echo "ec2 ip: ${{ env.EC2_IP }}" 
+          echo "ec2 ip: ${{ env.EC2_IPS }}" 
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
-          sudo yum update
-          sudo yum install httpd -y
-          sudo yum install git -y
-          sudo rm -r dns-alb
-          git clone https://github.com/mhakimov/dns-alb.git
-          sudo mv dns-alb/website/index.html /var/www/html/index.html
-          sudo echo '<h1>Hello World from $(hostname -f)</h1>' >> /var/www/html/index.html
-          sudo rm -r dns-alb
-          sudo systemctl start httpd.service
-          sudo systemctl enable httpd.service
-          sudo systemctl status httpd.service"
+          for EC2_IP in $EC2_IPS; do
+            echo 'IP address: $EC2_IP'
+            ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
+            sudo yum update
+            sudo yum install httpd -y
+            sudo yum install git -y
+            sudo rm -r dns-alb
+            git clone https://github.com/mhakimov/dns-alb.git
+            sudo mv dns-alb/website/index.html /var/www/html/index.html
+            sudo echo '<h1>Hello World from $(hostname -f)</h1>' >> /var/www/html/index.html
+            sudo rm -r dns-alb
+            sudo systemctl start httpd.service
+            sudo systemctl enable httpd.service
+            sudo systemctl status httpd.service
+          done
+          # ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
+          # sudo yum update
+          # sudo yum install httpd -y
+          # sudo yum install git -y
+          # sudo rm -r dns-alb
+          # git clone https://github.com/mhakimov/dns-alb.git
+          # sudo mv dns-alb/website/index.html /var/www/html/index.html
+          # sudo echo '<h1>Hello World from $(hostname -f)</h1>' >> /var/www/html/index.html
+          # sudo rm -r dns-alb
+          # sudo systemctl start httpd.service
+          # sudo systemctl enable httpd.service
+          # sudo systemctl status httpd.service
+          "
 
       - run: echo "🍏 This job's status is ${{ job.status }}."

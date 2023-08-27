@@ -1,5 +1,6 @@
 provider "aws" {
   region = "eu-west-2"  
+}
 
 locals {
   http_port = 80
@@ -11,12 +12,13 @@ locals {
 
 
 resource "aws_instance" "server_instance" {
+  count = var.instance_count
   ami           = "ami-0055e70f580e9ae80"  
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.server_security_group.id]
   key_name = aws_key_pair.example_keypair.key_name  
   tags = {
-    Name = "web_server"
+    Name = "web-server-${count.index}"
   }
 }
 
@@ -67,5 +69,5 @@ resource "aws_security_group" "server_security_group" {
 
 
 output "instance_ip" {
-  value = aws_instance.server_instance.public_ip
+  value = aws_instance.server_instance[*].public_ip
 }
