@@ -31,7 +31,7 @@ jobs:
             sudo rm -r dns-alb
             git clone https://github.com/mhakimov/dns-alb.git
             sudo mv dns-alb/website/index.html /var/www/html/index.html
-            sudo echo '<h1>Hello World from $(EC2_IP) $(hostname -f)</h1>' >> /var/www/html/index.html
+            sudo echo '<h1>Hello World from $EC2_IP $(hostname -f)</h1>' >> /var/www/html/index.html
             sudo rm -r dns-alb
             sudo systemctl start httpd.service
             sudo systemctl enable httpd.service
