@@ -3,6 +3,7 @@ provider "aws" {
 }
 
 locals {
+  ssh_port = 22
   http_port = 80
   https_port = 443
   any_port = 0
@@ -10,13 +11,14 @@ locals {
   tcp_protocol = "tcp"
 }
 
-
 resource "aws_instance" "server_instance" {
   count = var.instance_count
   ami           = "ami-0055e70f580e9ae80"  
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.server_security_group.id]
+  subnet_id = aws_subnet.subnet_aza.id
   key_name = aws_key_pair.example_keypair.key_name  
+  associate_public_ip_address = true
   tags = {
     Name = "web-server-${count.index}"
   }
@@ -27,43 +29,33 @@ resource "aws_key_pair" "example_keypair" {
   public_key = file("~/.ssh/id_rsa.pub")  
 }
 
-resource "aws_security_group" "server_security_group" {
-  # id          = "example-security-group-id"
-  name_prefix = "wssec-group"
-  # name_prefix = "example-security-group"
-  description = "security group for ec2"
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = local.tcp_protocol
-    cidr_blocks = local.all_ips
-  }
 
-  ingress {
-    from_port   = local.http_port
-    to_port     = local.http_port
-    protocol    = local.tcp_protocol
-    cidr_blocks = local.all_ips
-  }
+resource "aws_lb" "wu-tang" {
+  name               = "alb-wu-tang"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.lb_sg.id]
+  subnets            = [aws_subnet.subnet_aza.id, aws_subnet.subnet_azb.id]
+}
 
-  ingress {
-    from_port   = local.https_port
-    to_port     = local.https_port
-    protocol    = local.tcp_protocol
-    cidr_blocks = local.all_ips
+resource "aws_lb_target_group" "ec2_target_group" {
+  name     = "cool-target-group"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.dns_alb_vpc.id 
+  
+  health_check {
+    path = "/"
   }
+}
 
-  egress {
-    from_port   = local.any_port
-    to_port     = local.any_port
-    protocol    = "-1"
-    cidr_blocks = local.all_ips
-  }
-
-  tags = {
-    Name = "webserver-security-group"
-  }
+resource "aws_lb_target_group_attachment" "ec2_attachment" {
+  count          = var.instance_count
+  target_group_arn = aws_lb_target_group.ec2_target_group.arn
+  target_id      = aws_instance.server_instance[count.index].id
+  # target_id      = aws_instance.server_instance[*].id
+  port           = 80
 }
 
 

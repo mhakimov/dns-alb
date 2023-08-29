@@ -38,18 +38,4 @@ jobs:
             sudo systemctl status httpd.service
             exit"
           done
-          # ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2!' &&
-          # sudo yum update
-          # sudo yum install httpd -y
-          # sudo yum install git -y
-          # sudo rm -r dns-alb
-          # git clone https://github.com/mhakimov/dns-alb.git
-          # sudo mv dns-alb/website/index.html /var/www/html/index.html
-          # sudo echo '<h1>Hello World from $(hostname -f)</h1>' >> /var/www/html/index.html
-          # sudo rm -r dns-alb
-          # sudo systemctl start httpd.service
-          # sudo systemctl enable httpd.service
-          # sudo systemctl status httpd.service
-          
-
       - run: echo "🍏 This job's status is ${{ job.status }}."
