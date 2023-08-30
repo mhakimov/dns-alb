@@ -14,7 +14,8 @@ resource "aws_security_group" "server_security_group" {
     from_port   = local.http_port
     to_port     = local.http_port
     protocol    = local.tcp_protocol
-    cidr_blocks = local.all_ips
+    # cidr_blocks = local.all_ips
+    security_groups = [aws_security_group.lb_sg.id]
   }
 
   ingress {
