@@ -29,8 +29,6 @@ resource "aws_key_pair" "example_keypair" {
   public_key = file("~/.ssh/id_rsa.pub")  
 }
 
-
-
 resource "aws_lb" "wu-tang" {
   name               = "alb-wu-tang"
   internal           = false
