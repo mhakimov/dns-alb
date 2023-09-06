@@ -15,6 +15,7 @@ jobs:
           pwd
           cd ..
           ls -R
+          git clone https://github.com/mhakimov/dns-alb.git
           terraform init
 
       - name: terraform apply
