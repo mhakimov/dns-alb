@@ -1,7 +1,7 @@
 resource "aws_security_group" "server_security_group" {
   name_prefix = "wssec-group"
   description = "security group for ec2"
-  vpc_id = aws_vpc.dns_alb_vpc.id
+  vpc_id      = aws_vpc.dns_alb_vpc.id
 
   ingress {
     from_port   = 22
@@ -11,9 +11,9 @@ resource "aws_security_group" "server_security_group" {
   }
 
   ingress {
-    from_port   = local.http_port
-    to_port     = local.http_port
-    protocol    = local.tcp_protocol
+    from_port = local.http_port
+    to_port   = local.http_port
+    protocol  = local.tcp_protocol
     # cidr_blocks = local.all_ips
     security_groups = [aws_security_group.lb_sg.id]
   }
@@ -39,7 +39,7 @@ resource "aws_security_group" "server_security_group" {
 
 resource "aws_security_group" "lb_sg" {
   name_prefix = "alb_sg_"
-  vpc_id = aws_vpc.dns_alb_vpc.id
+  vpc_id      = aws_vpc.dns_alb_vpc.id
   description = "security group for alb"
 
   # ingress {
