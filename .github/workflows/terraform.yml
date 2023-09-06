@@ -1,0 +1,19 @@
+name: Deploy infrastructure
+run-name: ${{ github.actor }} is applying resources via terraform 🚀
+on: 
+  workflow_dispatch:
+jobs:
+  Initialize-working-directory-containing-Terraform-configuration-files:
+    runs-on: ubuntu-latest
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.ID_RSA }}
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+    steps:
+      - name: terraform init
+        run: terraform init
+
+      - name: terraform apply
+        run: terraform apply -auto-approve
+
+
