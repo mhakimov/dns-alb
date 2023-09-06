@@ -13,6 +13,7 @@ jobs:
       - name: terraform init
         run: |
           pwd
+          ls
           terraform init
 
       - name: terraform apply
