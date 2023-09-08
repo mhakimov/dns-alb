@@ -5,7 +5,7 @@ terraform {
        version = "~>3.27"
     }
   }
-  required_version = ">= 1.2.0"
+  required_version = ">=0.14.9"
 
   backend "s3" {
        bucket = "dns-alb-remote-state"
