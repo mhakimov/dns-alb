@@ -43,7 +43,7 @@ jobs:
     - name: Apply Terraform Changes
       run: |
         TF_VAR_domain_name=${{ secrets.TF_VAR_DOMAIN_NAME }} \
-        TF_VAR_hosted_zone_id=${{ secrets.TF_VAR_HOSTED_ZONE_ID }} \
+        TF_VAR_hosted_zone_id=${{ variables.TF_VAR_HOSTED_ZONE_ID }} \
         TF_VAR_id_rsa_pub="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCtW7uDwS+WeuSeMY01z6x5wAY6rFzUcC/VeXrpe1kSXXGdxZ123LSpeqeSbNCwdVtAkX1A8OTOyLbpF3BQwP8DXiDGlF2UEkkWRXoqkhhVoNPdPhrQmX5LSFR/5KPwOhgUj67t7pURXqpejJoRoffm9SkzRB6PjQM4wYnvhFB4dOrTVPQMRoIJLCL56sn+eJZNsHc52qVyIJ02QURvT7cOi3GBEUyoDkx6TBYtT84952LGIeaC34ZxxGSpvvTbv3zr48ZafaMq15QEhwPd02owtIh9a3IaKveaheYR80NyibCoo29sr7ynYKYp9Pq+S6IvE2PoEfDZoXdJWD1Eq/3tuEjLxf4EFi/ufFgrLyhF9K1JFo0jeE1b//mRv2Kg0w9fMTnXIaHSnt7MhMTlITDxIGX9iHcvEySqqQB29sBLXYarWzkOZJckEOE1ncgIEP3XCjq9iMT5yDPN48afMAcZlSiPyJb++wgnLd6NDlf5HbZUZsyVkxzSFVxYiDIrV91e05v9QzuKDzEymYGdmShiDFMCAAp8F78jM9LXU2794NcV7zcb46w/lwV86piUeACs+rYfBBqvuy0oDMChhsPkhmPICoNNuzIFS6bt21QJhFe7XUEIIyKxS/hdjM6wCrzRFF6uEIhfh4Uhwo6uvFV3ZKfA1fC4Dje8iWUAigMeiQ== marat@example.com" \
         terraform apply -auto-approve 
 
