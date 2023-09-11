@@ -6,46 +6,12 @@ jobs:
   tf_fmt:
     name: Deploy Site
     runs-on: ubuntu-latest
-    steps:
 
-    - name: Checkout Repo
-      uses: actions/checkout@v4
-
-    - name: Set up Terraform Environment
-      run: |
-        wget https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
-        unzip terraform_0.15.5_linux_amd64.zip
-        chmod +x terraform
-        mv terraform /usr/local/bin/
-
-    
-To run terraform init in GitHub Actions for a project with remote state stored in an S3 bucket, you'll need to set up your GitHub Actions workflow file to include the necessary AWS credentials and environment variables. Here's a step-by-step guide on how to do this:
-
-AWS IAM User and S3 Bucket Setup:
-Ensure you have an AWS IAM user with appropriate permissions to access the S3 bucket where your Terraform remote state is stored.
-Create an AWS Access Key and Secret Key for this IAM user. Make sure to keep these credentials secure.
-GitHub Secrets:
-In your GitHub repository, go to "Settings" -> "Secrets" and create two secrets:
-AWS_ACCESS_KEY_ID: Set this to the AWS Access Key you generated.
-AWS_SECRET_ACCESS_KEY: Set this to the AWS Secret Key you generated.
-GitHub Actions Workflow:
-Create or modify your GitHub Actions workflow YAML file (e.g., .github/workflows/terraform.yml) to include the following steps:
-yaml
-Copy code
-name: Terraform Workflow
-
-on:
-  push:
-    branches:
-      - main # Modify this to match your branch name
-
-jobs:
-  terraform:
-    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+
 
     - name: Set up Terraform Environment
       run: |
