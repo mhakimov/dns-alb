@@ -29,7 +29,7 @@ jobs:
 
     - name: Initialize Terraform
       run: |
-        terraform init -backend-config="bucket=dns-alb-remote-state" \
+        terraform init -upgrade -backend-config="bucket=dns-alb-remote-state" \
                         -backend-config="key=prod/terraform.tfstate" \
                         -backend-config="region=eu-west-2"
 
