@@ -6,6 +6,10 @@ jobs:
   tf_fmt:
     name: Deploy Site
     runs-on: ubuntu-latest
+    # env:
+    #   SSH_PRIVATE_KEY: ${{ secrets.ID_RSA }}
+    #   AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+    #   AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
 
 
     steps:
@@ -38,7 +42,7 @@ jobs:
         
     - name: Apply Terraform Changes
       run: |
-        terraform apply -auto-approve 
+        TF_VAR_domain_name=${{ secrets.TF_VAR_DOMAIN_NAME }} terraform apply -auto-approve 
 
     # - name: Terraform Init
     #   uses: hashicorp/terraform-github-actions/init@v0.4.0
