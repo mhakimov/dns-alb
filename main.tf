@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "eu-west-2"
-}
-
 locals {
   ssh_port     = 22
   http_port    = 80

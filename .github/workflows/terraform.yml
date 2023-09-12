@@ -1,24 +1,46 @@
-name: Deploy infrastructure
-run-name: ${{ github.actor }} is applying resources via terraform 🚀
-on: 
-  workflow_dispatch:
+name: Deploy Infrastructure
+
+on: [push]
+
 jobs:
-  Initialize-working-directory-containing-Terraform-configuration-files:
+  tf_fmt:
+    name: Deploy Site
     runs-on: ubuntu-latest
     env:
-      SSH_PRIVATE_KEY: ${{ secrets.ID_RSA }}
-      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      TF_VAR_ID_RSA_PUB: ${{ secrets.TF_VAR_ID_RSA_PUB }}
+
     steps:
-      - name: terraform init
-        run: |
-          pwd
-          cd ..
-          ls -R
-          git clone https://github.com/mhakimov/dns-alb.git
-          terraform init
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
-      - name: terraform apply
-        run: terraform apply -auto-approve
 
+    - name: Set up Terraform Environment
+      run: |
+        wget https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
+        unzip terraform_0.15.5_linux_amd64.zip
+        chmod +x terraform
+        mv terraform /usr/local/bin/
+        
+    - name: Configure AWS CLI
+      uses: aws-actions/configure-aws-credentials@v3.0.2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2 
+
+    - name: Initialize Terraform
+      run: |
+        terraform init -upgrade -backend-config="bucket=dns-alb-remote-state" \
+                        -backend-config="key=prod/terraform.tfstate" \
+                        -backend-config="region=eu-west-2"
+
+    - name: Terraform Validate
+      run: terraform validate
+        
+    - name: Apply Terraform Changes
+      run: |
+        TF_VAR_domain_name=${{ secrets.TF_VAR_DOMAIN_NAME }} \
+        TF_VAR_hosted_zone_id=${{ vars.TF_VAR_HOSTED_ZONE_ID }} \
+        TF_VAR_id_rsa_pub=$TF_VAR_ID_RSA_PUB \
+        terraform apply -auto-approve 
 
