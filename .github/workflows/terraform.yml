@@ -44,7 +44,7 @@ jobs:
       run: |
         TF_VAR_domain_name=${{ secrets.TF_VAR_DOMAIN_NAME }} \
         TF_VAR_hosted_zone_id=${{ vars.TF_VAR_HOSTED_ZONE_ID }} \
-        TF_VAR_id_rsa_pub=${{ secrets.TF_VAR_ID_RSA_PUB }} \
+        TF_VAR_id_rsa_pub=${{ vars.TF_VAR_ID_RSA_PUB }} \
         terraform apply -auto-approve 
 
     # - name: Terraform Init
