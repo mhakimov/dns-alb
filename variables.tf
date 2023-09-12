@@ -1,3 +1,7 @@
+variable "aws_region" {
+  default = "eu-west-2"
+}
+
 variable "instance_count" {
   default = 2
 }
