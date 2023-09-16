@@ -10,7 +10,7 @@ terraform {
   backend "s3" {
        bucket = "dns-alb-remote-state"
        key    = "prod/terraform.tfstate"
-       region = var.aws_region
+       region = "eu-west-2"
    }
 }
 

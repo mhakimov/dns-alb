@@ -20,6 +20,7 @@ jobs:
         run: |
           echo "ec2 ip: ${{ env.EC2_IPS }}" 
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+          export TERM=msys
           for EC2_IP in $EC2_IPS; do
             echo 'IP address: $EC2_IP'
             ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2 $EC2_IP!' &&

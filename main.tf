@@ -7,18 +7,18 @@ locals {
   tcp_protocol = "tcp"
 }
 
-resource "aws_instance" "server_instance" {
-  count                       = var.instance_count
-  ami                         = "ami-0055e70f580e9ae80"
-  instance_type               = "t2.micro"
-  vpc_security_group_ids      = [aws_security_group.server_security_group.id]
-  subnet_id                   = aws_subnet.subnet_aza.id
-  key_name                    = aws_key_pair.example_keypair.key_name
-  associate_public_ip_address = true
-  tags = {
-    Name = "web-server-${count.index}"
-  }
-}
+# resource "aws_instance" "server_instance" {
+#   count                       = var.instance_count
+#   ami                         = var.ami
+#   instance_type               = var.instance_type
+#   vpc_security_group_ids      = [aws_security_group.server_security_group.id]
+#   subnet_id                   = aws_subnet.subnet_aza.id
+#   key_name                    = aws_key_pair.example_keypair.key_name
+#   associate_public_ip_address = true
+#   tags = {
+#     Name = "web-server-${count.index}"
+#   }
+# }
 
 resource "aws_key_pair" "example_keypair" {
   key_name   = "my-keypair"
@@ -45,13 +45,12 @@ resource "aws_lb_target_group" "ec2_target_group" {
   }
 }
 
-resource "aws_lb_target_group_attachment" "ec2_attachment" {
-  count            = var.instance_count
-  target_group_arn = aws_lb_target_group.ec2_target_group.arn
-  target_id        = aws_instance.server_instance[count.index].id
-  # target_id      = aws_instance.server_instance[*].id
-  port = 80
-}
+# resource "aws_lb_target_group_attachment" "ec2_attachment" {
+#   count            = var.instance_count
+#   target_group_arn = aws_lb_target_group.ec2_target_group.arn
+#   target_id        = aws_instance.server_instance[count.index].id
+#   port = 80
+# }
 
 resource "aws_lb_listener" "alb_listener_http" {
   load_balancer_arn = aws_lb.wu-tang.arn
@@ -101,6 +100,18 @@ resource "aws_acm_certificate_validation" "webapp_cert_validation" {
 }
 
 
-output "instance_ip" {
-  value = aws_instance.server_instance[*].public_ip
+# output "instance_ip" {
+#   value = aws_instance.server_instance[*].public_ip
+# }
+
+output "vpc_id" {
+  value = aws_vpc.dns_alb_vpc.id
+}
+
+output "sec_group_id" {
+  value = aws_security_group.server_security_group.id
+}
+
+output "subnet_aza" {
+  value = aws_subnet.subnet_aza.id
 }
