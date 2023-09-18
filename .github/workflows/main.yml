@@ -16,7 +16,7 @@ jobs:
       - name: fetch ec2 IP
         run: echo "EC2_IPS=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web-server-*" "Name=instance-state-name,Values=running" --query 'Reservations[].Instances[].PublicIpAddress' --output text --region eu-west-2) " >> $GITHUB_ENV
 
-      - name: run apache server
+      - name: install apache server
         run: |
           echo "ec2 ip: ${{ env.EC2_IPS }}" 
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
@@ -31,6 +31,16 @@ jobs:
             sudo yum install git -y
             echo 'removing dns-alb'
             sudo rm -r dns-alb
+            exit"
+          done
+      - name: run apache server
+        run: |
+          echo "ec2 ip: ${{ env.EC2_IPS }}" 
+          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+          export TERM=msys
+          for EC2_IP in $EC2_IPS; do
+            echo 'IP address: $EC2_IP'
+            ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2 $EC2_IP!' &&
             git clone https://github.com/mhakimov/dns-alb.git
             sudo mv dns-alb/website/index.html /var/www/html/index.html
             # Displaying IP addresses shows if the load balancer is spreading the load
