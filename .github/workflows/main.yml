@@ -30,7 +30,7 @@ jobs:
             echo 'installing git'
             sudo yum install git -y
             echo 'removing dns-alb'
-            file="dns-alb"
+            export file="dns-alb"
 
             if [ -e "$file" ]; then
               echo "Removing $file"
