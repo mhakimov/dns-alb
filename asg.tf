@@ -31,9 +31,9 @@ resource "aws_launch_template" "t2s_template" {
 
 resource "aws_autoscaling_group" "t2s_asg" {
   # availability_zones = ["${var.aws_region}a", "${var.aws_region}b", "${var.aws_region}c"]
-  desired_capacity   = 3
-  max_size           = 4
-  min_size           = 2
+  desired_capacity   = 2
+  max_size           = 3
+  min_size           = 1
 # subnets/azs?
   health_check_type = "ELB"
   vpc_zone_identifier = [aws_subnet.subnet_aza.id, aws_subnet.subnet_azb.id]
