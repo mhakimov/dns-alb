@@ -14,7 +14,7 @@ jobs:
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
 
       - name: fetch ec2 IP
-        run: echo "EC2_IPS=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web-server-*" --query 'Reservations[].Instances[].PublicIpAddress' --output text --region eu-west-2) " >> $GITHUB_ENV
+        run: echo "EC2_IPS=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=web-server-*" "Name=instance-state-name,Values=running" --query 'Reservations[].Instances[].PublicIpAddress' --output text --region eu-west-2) " >> $GITHUB_ENV
 
       - name: run apache server
         run: |
