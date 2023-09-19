@@ -66,9 +66,13 @@ jobs:
             sudo echo '<h1>Hello World from $EC2_IP $(hostname -f)</h1>' >> /var/www/html/index.html
             echo "removing dns-alb"
             sudo rm -r dns-alb
+            echo "starting httpd"
             sudo systemctl start httpd.service
+            echo "enabling httpd"
             sudo systemctl enable httpd.service
+            echo "httpd status"
             sudo systemctl status httpd.service
+            echo "exiting"
             exit"
           done
       - run: echo "🍏 This job's status is ${{ job.status }}."
