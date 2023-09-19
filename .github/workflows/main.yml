@@ -71,7 +71,7 @@ jobs:
             echo "enabling httpd"
             sudo systemctl enable httpd.service
             echo "httpd status"
-            sudo systemctl status httpd.service
+            # sudo systemctl status httpd.service
             echo "exiting"
             sudo exit"
           done
