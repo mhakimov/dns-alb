@@ -62,9 +62,9 @@ jobs:
           export TERM=msys
           for EC2_IP in $EC2_IPS; do
             echo 'IP address: $EC2_IP'
-            ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2 $EC2_IP!' &&
-            # Displaying IP addresses shows if the load balancer is spreading the load
+            TERM=xterm ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2 $EC2_IP!' &&
             sudo echo '<h1>Hello World from $EC2_IP $(hostname -f)</h1>' >> /var/www/html/index.html
+            echo "removing dns-alb"
             sudo rm -r dns-alb
             sudo systemctl start httpd.service
             sudo systemctl enable httpd.service
