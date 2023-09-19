@@ -34,7 +34,7 @@ jobs:
 
             if [ -e dns-alb ]; then
               echo "Removing dns-alb"
-              rm -r dns-alb
+              rm -f -r dns-alb
             else
               echo "$file does not exist."
             fi
@@ -65,7 +65,7 @@ jobs:
             TERM=xterm ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2 $EC2_IP!' &&
             sudo echo '<h1>Hello World from $EC2_IP $(hostname -f)</h1>' >> /var/www/html/index.html
             echo "removing dns-alb"
-            sudo rm -r dns-alb
+            sudo rm -f -r dns-alb
             echo "starting httpd"
             sudo systemctl start httpd.service
             echo "enabling httpd"
