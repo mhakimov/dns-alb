@@ -42,7 +42,7 @@ jobs:
             exit"
           done
           
-      - name: run apache server
+      - name: clone repo
         run: |
           echo "ec2 ip: ${{ env.EC2_IPS }}" 
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
@@ -52,6 +52,17 @@ jobs:
             ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2 $EC2_IP!' &&
             git clone https://github.com/mhakimov/dns-alb.git
             sudo mv dns-alb/website/index.html /var/www/html/index.html
+            exit"
+          done
+          
+      - name: run apache server
+        run: |
+          echo "ec2 ip: ${{ env.EC2_IPS }}" 
+          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+          export TERM=msys
+          for EC2_IP in $EC2_IPS; do
+            echo 'IP address: $EC2_IP'
+            ssh -o StrictHostKeyChecking=no -i private_key -tt ec2-user@$EC2_IP "echo 'Hello from EC2 $EC2_IP!' &&
             # Displaying IP addresses shows if the load balancer is spreading the load
             sudo echo '<h1>Hello World from $EC2_IP $(hostname -f)</h1>' >> /var/www/html/index.html
             sudo rm -r dns-alb
